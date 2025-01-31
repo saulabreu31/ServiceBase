@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Study Flow</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Space between logo, title, and buttons */
+            color: white;
+            padding: 20px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        #logo {
+            height: 100px; /* Larger logo */
+        }
+
+        .title-container {
+            flex-grow: 1; /* Ensures the title takes up the center space */
+            text-align: center;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 80px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px; /* Adds spacing between buttons */
+        }
+
+        .button-container button {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: #fff;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .section {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            width: 48%;
+            margin: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: grey;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // List of colors for dynamic background changes
+            const headerColors = ["#FF5733", "#33B5FF", "#33FF57", "#FF33A8", "#9B33FF", "#FF8C33"];
+            const contentColors = ["#EAEDED", "#FDF2E9", "#EBF5FB", "#E8F8F5", "#F9EBEA", "#FEF9E7"];
+
+            // Apply random color to the header
+            const header = document.querySelector("header");
+            const randomHeaderColor = headerColors[Math.floor(Math.random() * headerColors.length)];
+            if (header) {
+                header.style.backgroundColor = randomHeaderColor;
+            }
+
+            // Apply random color to the main container background
+            const container = document.querySelector(".container");
+            const randomContentColor = contentColors[Math.floor(Math.random() * contentColors.length)];
+            if (container) {
+                container.style.backgroundColor = randomContentColor;
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <!-- Logo on the Left -->
+        <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
+
+        <!-- Title in the Center -->
+        <div class="title-container">
+            <h1 class="title">StudyFlow</h1>
+        </div>
+
+        <!-- Buttons on the Right -->
+        <div class="button-container">
+            <button onclick="location.href='{{ url_for('main.login') }}'">Login</button>
+            <button onclick="location.href='{{ url_for('main.register') }}'">Create Account</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Calendar Section -->
+        <div class="section" id="calendar-section">
+            <h2>Calendar</h2>
+            <p>View and manage your schedule.</p>
+            <a href="{{ url_for('main.calendar_page') }}">
+                <button>Go to Calendar</button>
+            </a>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="section" id="notes-section">
+            <h2>Notes</h2>
+            <p>Create and save personal notes for your classes.</p>
+            <a href="{{ url_for('main.uploadNotes') }}">
+                <button>Go to Notes</button>
+            </a>
+        </div>
+
+        <!-- File Upload Section -->
+        <div class="section" id="file-upload-section">
+            <h2>File Upload</h2>
+            <p>Upload your files here for easy access.</p>
+            <a href="{{ url_for('main.uploadFiles') }}">
+                <button>Go to Upload Form</button>
+            </a>
+        </div>
+
+        <!-- Courses Section -->
+        <div class="section" id="courses-section">
+            <h2>Courses</h2>
+            <p>Add and save personal Courses from any institution.</p>
+            <a href="{{ url_for('main.courses_page') }}">
+                <button>Go to Courses</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 StudyFlow Platform</p>
+    </footer>
+</body>
+</html>
+
+
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <header>
+        <div class="logo-container">
+            <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
+        </div>
+        <div class="title-container">
+            <h1 class="title">StudyFlow</h1>
+        </div>
+    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .home-btn {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .home-btn:hover {
+            background-color: #0056b3;
+        }
+        .content {
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<a href="{{ url_for('home') }}" class="home-btn">Back to Home</a>
+
+<h1>{{ title }}</h1>
+
+<!-- Add New Course -->
+<div class="content">
+    <form action="{{ url_for('main.courses_page') }}" method="POST">
+        <label for="class_name">Class Name:</label>
+        <input type="text" id="class_name" name="class_name" required><br>
+
+        <label for="time">Time:</label>
+        <input type="text" id="time" name="time" required><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required><br>
+
+        <button type="submit">Add Course</button>
+    </form>
+
+    <hr>
+
+    <!-- List of Courses -->
+    <h2>Courses</h2>
+    <ul>
+        {% for course in courses %}
+        <li>{{ course.class_name }} - {{ course.time }} - {{ course.location }}</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    justify-content: center;/* Center content vertically */
+    align-items: center;
+    text-align: center;  
+}
+
+h1 {
+    color: #1205d1; /* Blue*/
+    font-size: 36px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+p {
+    font-size: 18px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+    color: #555;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    margin-top: 50px;
+}
+
+footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+form {
+    display: flex;
+    flex-direction: column; /* Ensures the form elements are stacked vertically */
+    justify-content: center; /* Centers form elements vertically */
+    align-items: center; /* Centers form elements horizontally */
+    margin: 0 auto; /* Horizontally centers the form in its container */
+    max-width: 500px; /* Optional: Set a max width for the form */
+    padding: 20px; /* Optional: Adds padding inside the form */
+    border: 1px solid #ccc; /* Optional: Adds a border around the form */
+    border-radius: 10px; /* Optional: Rounds the corners of the form */
+}
+
+
