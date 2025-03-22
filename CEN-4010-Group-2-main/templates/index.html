@@ -10,23 +10,64 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Side Panel Menu */
+        .side-panel {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #333;
+            padding-top: 60px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .side-panel a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .side-panel a:hover {
+            background-color: #575757;
+        }
+
+        .toggle-btn {
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            z-index: 1001;
         }
 
         header {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between logo, title, and buttons */
+            justify-content: space-between;
             color: white;
             padding: 20px 20px;
             transition: background-color 0.3s ease;
+            margin-left: 250px; /* shift content for sidebar */
         }
 
         #logo {
-            height: 100px; /* Larger logo */
+            height: 100px;
         }
 
         .title-container {
-            flex-grow: 1; /* Ensures the title takes up the center space */
+            flex-grow: 1;
             text-align: center;
         }
 
@@ -37,7 +78,7 @@
 
         .button-container {
             display: flex;
-            gap: 10px; /* Adds spacing between buttons */
+            gap: 10px;
         }
 
         .button-container button {
@@ -61,6 +102,7 @@
             justify-content: space-between;
             padding: 20px;
             transition: background-color 0.3s ease;
+            margin-left: 250px; /* shift content for sidebar */
         }
 
         .section {
@@ -78,6 +120,7 @@
             padding: 10px;
             background-color: #f1f1f1;
             margin-top: 20px;
+            margin-left: 250px; /* shift content for sidebar */
         }
 
         button {
@@ -96,46 +139,59 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // List of colors for dynamic background changes
             const headerColors = ["#FF5733", "#33B5FF", "#33FF57", "#FF33A8", "#9B33FF", "#FF8C33"];
             const contentColors = ["#EAEDED", "#FDF2E9", "#EBF5FB", "#E8F8F5", "#F9EBEA", "#FEF9E7"];
 
-            // Apply random color to the header
             const header = document.querySelector("header");
-            const randomHeaderColor = headerColors[Math.floor(Math.random() * headerColors.length)];
+            const container = document.querySelector(".container");
+
             if (header) {
-                header.style.backgroundColor = randomHeaderColor;
+                header.style.backgroundColor = headerColors[Math.floor(Math.random() * headerColors.length)];
             }
 
-            // Apply random color to the main container background
-            const container = document.querySelector(".container");
-            const randomContentColor = contentColors[Math.floor(Math.random() * contentColors.length)];
             if (container) {
-                container.style.backgroundColor = randomContentColor;
+                container.style.backgroundColor = contentColors[Math.floor(Math.random() * contentColors.length)];
             }
         });
+
+        function toggleMenu() {
+            const panel = document.getElementById("sidePanel");
+            if (panel.style.left === "0px") {
+                panel.style.left = "-250px";
+            } else {
+                panel.style.left = "0px";
+            }
+        }
     </script>
 </head>
 <body>
+
+    <!-- Side Panel Menu -->
+    <button class="toggle-btn" onclick="toggleMenu()">☰ Menu</button>
+    <div id="sidePanel" class="side-panel">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('main.calendar_page') }}">Calendar</a>
+        <a href="{{ url_for('main.uploadNotes') }}">Notes</a>
+        <a href="{{ url_for('main.uploadFiles') }}">Upload</a>
+        <a href="{{ url_for('main.courses_page') }}">Courses</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Main Content -->
     <header>
-        <!-- Logo on the Left -->
         <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="StudyFlow Logo">
 
-        <!-- Title in the Center -->
         <div class="title-container">
             <h1 class="title">StudyFlow</h1>
         </div>
 
-        <!-- Buttons on the Right -->
         <div class="button-container">
             <button onclick="location.href='{{ url_for('main.login') }}'">Login</button>
             <button onclick="location.href='{{ url_for('main.register') }}'">Create Account</button>
         </div>
     </header>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Calendar Section -->
         <div class="section" id="calendar-section">
             <h2>Calendar</h2>
             <p>View and manage your schedule.</p>
@@ -144,7 +200,6 @@
             </a>
         </div>
 
-        <!-- Notes Section -->
         <div class="section" id="notes-section">
             <h2>Notes</h2>
             <p>Create and save personal notes for your classes.</p>
@@ -153,7 +208,6 @@
             </a>
         </div>
 
-        <!-- File Upload Section -->
         <div class="section" id="file-upload-section">
             <h2>File Upload</h2>
             <p>Upload your files here for easy access.</p>
@@ -162,7 +216,6 @@
             </a>
         </div>
 
-        <!-- Courses Section -->
         <div class="section" id="courses-section">
             <h2>Courses</h2>
             <p>Add and save personal Courses from any institution.</p>
@@ -172,12 +225,13 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
-        <p>© 2024 ServiceBase </p>
+        <p>© 2024 StudyFlow Platform</p>
     </footer>
+
 </body>
 </html>
+
 
 
 
