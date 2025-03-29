@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ServiceBase</title>
+    <title>ServiceBases</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -19,7 +19,7 @@
             width: 250px;
             position: fixed;
             top: 0;
-            left: -250px;
+            left: 0;
             background-color: #333;
             padding-top: 60px;
             transition: 0.3s;
@@ -141,26 +141,33 @@
         document.addEventListener("DOMContentLoaded", () => {
             const headerColors = ["#FF5733", "#33B5FF", "#33FF57", "#FF33A8", "#9B33FF", "#FF8C33"];
             const contentColors = ["#EAEDED", "#FDF2E9", "#EBF5FB", "#E8F8F5", "#F9EBEA", "#FEF9E7"];
-
+    
             const header = document.querySelector("header");
             const container = document.querySelector(".container");
-
-            if (header) {
-                header.style.backgroundColor = headerColors[Math.floor(Math.random() * headerColors.length)];
+            const sidePanel = document.getElementById("sidePanel");
+    
+            // Smooth transition
+            if (header) header.style.transition = "background-color 2s ease";
+            if (sidePanel) sidePanel.style.transition = "background-color 2s ease";
+            if (container) container.style.transition = "background-color 2s ease";
+    
+            // Initial color
+            function setColors() {
+                const headerColor = headerColors[Math.floor(Math.random() * headerColors.length)];
+                const contentColor = contentColors[Math.floor(Math.random() * contentColors.length)];
+    
+                if (header) header.style.backgroundColor = headerColor;
+                if (sidePanel) sidePanel.style.backgroundColor = headerColor;
+                if (container) container.style.backgroundColor = contentColor;
             }
-
-            if (container) {
-                container.style.backgroundColor = contentColors[Math.floor(Math.random() * contentColors.length)];
-            }
+    
+            setColors(); // first time
+            setInterval(setColors, 5000); // every 5 seconds
         });
-
+    
         function toggleMenu() {
             const panel = document.getElementById("sidePanel");
-            if (panel.style.left === "0px") {
-                panel.style.left = "-250px";
-            } else {
-                panel.style.left = "0px";
-            }
+            panel.style.left = (panel.style.left === "0px") ? "-250px" : "0px";
         }
     </script>
 </head>
@@ -178,7 +185,7 @@
 
     <!-- Main Content -->
     <header>
-        <img id="logo" src="{{ url_for('static', filename='ServiceBase.png') }}" alt="ServiceBase">
+        <img id="logo" src="{{ url_for('static', filename='images/ServiceBase.png') }}" alt="ServiceBase">
 
         <div class="title-container">
             <h1 class="title">ServiceBase</h1>
