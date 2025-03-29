@@ -41,7 +41,7 @@ with app.app_context():
 # Routes for additional functionality
 @app.route('/')
 def home():
-    return render_template('index.html', title='Study Flow')
+    return render_template('index.html', title='Service Base')
 
 @app.route('/database')
 def database_page():
