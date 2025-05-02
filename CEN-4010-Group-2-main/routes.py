@@ -14,8 +14,9 @@ UPLOAD_FOLDER = 'uploads'
 
 # Home Page
 @main_bp.route('/')
-def home():
-    return RENDER_TEMPLATE('index.html')
+
+return render_template('index.html')
+
 
 # Login Page
 @main_bp.route('/login', methods=['GET', 'POST'])
