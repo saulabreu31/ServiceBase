@@ -12,20 +12,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def create_app():
     app = Flask(__name__)
 
-    # Create the instance folder if it doesn't exist
-    os.makedirs(os.path.join(app.root_path, 'instance'), exist_ok=True)
+    # Absolute path to instance folder and DB file
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    db_path = os.path.join(basedir, 'instance', 'servicebases.db')
+    os.makedirs(os.path.join(basedir, 'instance'), exist_ok=True)
 
-    # Configuration
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/servicebases.db'
+    # Config
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your_secret_key_here'
     app.config['UPLOAD_FOLDER'] = 'uploads'
 
-    # Initialize database and migration
     db.init_app(app)
     Migrate(app, db)
-
-    # Register blueprints
     app.register_blueprint(main_bp)
 
     return app
