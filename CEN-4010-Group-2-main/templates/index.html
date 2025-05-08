@@ -136,6 +136,22 @@
         button:hover {
             background-color: grey;
         }
+
+        .auth-btn {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .auth-btn:hover {
+            background-color: grey;
+        }
+        
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -191,10 +207,22 @@
             <h1 class="title">ServiceBases</h1>
         </div>
 
-        <div class="button-container">
-            <button onclick="location.href='{{ url_for('main.login') }}'">Login</button>
-            <button onclick="location.href='{{ url_for('main.register') }}'">Create Account</button>
+        <div class="top-right-auth" style="position: absolute; top: 20px; right: 30px; display: flex; align-items: center; gap: 10px;">
+            {% if session.get('username') %}
+                <span style="color: black;">Welcome, {{ session['username'] }}!</span>
+                <form action="{{ url_for('main.logout') }}" method="get" style="margin: 0;">
+                    <button type="submit" class="auth-btn">Logout</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('main.login') }}">
+                    <button class="auth-btn">Login</button>
+                </a>
+                <a href="{{ url_for('main.register') }}">
+                    <button class="auth-btn">Create Account</button>
+                </a>
+            {% endif %}
         </div>
+        
     </header>
 
     <div class="container">
