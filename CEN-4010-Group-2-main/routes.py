@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, jsonif
 from models import User, db, Note, Studyflow, UploadedFile, CalendarEvent
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 import os
 from forms import LoginForm
 import logging
@@ -276,6 +277,28 @@ def delete_event(event_id):
         logger.error(f"Error deleting event: {str(e)}")
         db.session.rollback()
         return jsonify({'error': 'Internal server error'}), 500
+@main_bp.route('/forum', methods=['GET', 'POST'])
+def forum():
+    if request.method == 'POST':
+        username = session.get('username', 'Anonymous')
+        content = request.form.get('content')
+        image_file = request.files.get('image')
+        filename = None
+
+        if image_file and image_file.filename:
+            filename = secure_filename(image_file.filename)
+            image_path = os.path.join(current_app.static_folder, 'uploads', filename)
+            image_file.save(image_path)
+
+        new_post = ForumPost(username=username, content=content, image_filename=filename)
+        db.session.add(new_post)
+        db.session.commit()
+        flash("Post created successfully!", "success")
+        return redirect(url_for('main.forum'))
+
+    posts = ForumPost.query.order_by(ForumPost.timestamp.desc()).all()
+    return render_template('forum.html', posts=posts)
+
 
 
 
