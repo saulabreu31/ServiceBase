@@ -1,78 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-    <header>
-        <div class="logo-container">
-            <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
-        </div>
-        <div class="title-container">
-            <h1 class="title">StudyFlow</h1>
-        </div>
-    </header>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>ServiceBase Forum</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        .home-btn {
-            background-color: #007bff;
+        body {
+            margin: 0;
+            background-color: #000;
+            color: #e7e9ea;
+            font-family: system-ui, sans-serif;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            background-color: #000;
+            border-right: 1px solid #2f3336;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        .sidebar img {
+            width: 40px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 20px 0;
-            font-size: 14px;
+            font-size: 18px;
+            padding: 12px 0;
+            display: block;
+            font-weight: 500;
         }
-        .home-btn:hover {
-            background-color: #0056b3;
+
+        .sidebar a:hover {
+            background-color: #16181c;
+            border-radius: 10px;
+            padding-left: 10px;
         }
-        .content {
+
+        .main {
+            margin-left: 260px;
             padding: 20px;
+            max-width: 600px;
         }
-        button {
-            padding: 10px 15px;
-            font-size: 14px;
-            background-color: #4CAF50;
-            color: white;
+
+        .header {
+            border-bottom: 1px solid #2f3336;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .post {
+            background-color: #16181c;
+            border: 1px solid #2f3336;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .post h3 {
+            margin-top: 0;
+            color: #e7e9ea;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: #71767b;
+            margin-bottom: 8px;
+        }
+
+        .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .action-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            background: transparent;
             border: none;
-            border-radius: 4px;
+            color: #1d9bf0;
             cursor: pointer;
+            font-size: 14px;
         }
-        button:hover {
-            background-color: #45a049;
+
+        .action-buttons button:hover {
+            text-decoration: underline;
+        }
+
+        .title-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title-logo img {
+            width: 36px;
+            height: 36px;
+        }
+
+        .title-logo h1 {
+            font-size: 22px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<a href="{{ url_for('home') }}" class="home-btn">Back to Home</a>
 
-<h1>{{ title }}</h1>
+    <div class="sidebar">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="ServiceBase Logo">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('main.calendar_page') }}">Calendar</a>
+        <a href="{{ url_for('main.uploaded_files') }}">Job Listings</a>
+        <a href="{{ url_for('main.uploadNotes') }}">Forum</a>
+        <a href="{{ url_for('main.courses_page') }}">Courses</a>
+    </div>
 
-<!-- Add New Course -->
-<div class="content">
-    <form action="{{ url_for('main.courses_page') }}" method="POST">
-        <label for="class_name">Class Name:</label>
-        <input type="text" id="class_name" name="class_name" required><br>
+    <div class="main">
+        <div class="header title-logo">
+            <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+            <h1>ServiceBase Forum</h1>
+        </div>
 
-        <label for="time">Time:</label>
-        <input type="text" id="time" name="time" required><br>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post">
+                    <div class="username">@{{ post.author }}</div>
+                    <div class="timestamp">{{ post.timestamp.strftime('%b %d, %Y %I:%M %p') }}</div>
+                    <p>{{ post.content }}</p>
+                    {% if post.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}" alt="Forum Image">
+                    {% endif %}
+                    <div class="action-buttons">
+                        <button>Reply</button>
+                        <button>Repost</button>
+                        <button>Like</button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #71767b;">No forum posts yet. Be the first to start a conversation.</p>
+        {% endif %}
+    </div>
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required><br>
-
-        <button type="submit">Add Course</button>
-    </form>
-
-    <hr>
-
-    <!-- List of Courses -->
-    <h2>Courses</h2>
-    <ul>
-        {% for course in courses %}
-        <li>{{ course.class_name }} - {{ course.time }} - {{ course.location }}</li>
-        {% endfor %}
-    </ul>
-</div>
 </body>
 </html>
+
