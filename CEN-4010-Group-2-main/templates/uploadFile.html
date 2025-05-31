@@ -1,60 +1,125 @@
 <!DOCTYPE html>
-<header>
-    <div class="logo-container">
-        <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
-    </div>
-    <div class="title-container">
-        <h1 class="title">StudyFlow</h1>
-    </div>
-</header>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>ServiceBase Job Listings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        .home-btn {
-            background-color: #007bff;
+        body {
+            background-color: #000;
+            color: #e7e9ea;
+            font-family: system-ui, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #2f3336;
+        }
+
+        .logo-container img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .job-card {
+            background-color: #16181c;
+            border: 1px solid #2f3336;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .job-card:hover {
+            background-color: #1e2226;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1d9bf0;
+            margin-bottom: 5px;
+        }
+
+        .job-company {
+            font-size: 16px;
+            color: #cfd9de;
+            margin-bottom: 4px;
+        }
+
+        .job-location {
+            font-size: 14px;
+            color: #8899a6;
+            margin-bottom: 10px;
+        }
+
+        .job-description {
+            color: #e7e9ea;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .apply-btn {
+            background-color: #1d9bf0;
             color: white;
+            padding: 8px 16px;
+            border-radius: 9999px;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .apply-btn:hover {
+            background-color: #1a8cd8;
+        }
+
+        .back-link {
+            color: #1d9bf0;
+            text-decoration: none;
             display: inline-block;
-            margin: 20px 0;
-            font-size: 14px;
+            margin-bottom: 20px;
         }
-        .home-btn:hover {
-            background-color: #0056b3;
-        }
-        button {
-            padding: 8px 16px;
-            font-size: 14px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        button:hover {
-            background-color: #45a049;
+
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<a href="{{ url_for('home') }}" class="home-btn">Back to Home</a>
+    <div class="header">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="ServiceBase Logo">
+        </div>
+        <div class="title">ServiceBase Job Listings</div>
+    </div>
 
-<h1>{{ title }}</h1>
-<form action="/upload" method="POST" enctype="multipart/form-data">
-    <label for="file">Select file to upload:</label>
-    <input type="file" name="file" id="file" required>
-    <button type="submit">Upload</button>
-</form>
+    <div class="container">
+        <a href="{{ url_for('home') }}" class="back-link">← Back to Home</a>
 
-<!-- Button to navigate to the Uploaded Files section -->
-<a href="{{ url_for('main.uploaded_files') }}">
-    <button type="button">View Uploaded Files</button>
-</a>
+        {% for job in jobs %}
+        <div class="job-card">
+            <div class="job-title">{{ job.title }}</div>
+            <div class="job-company">{{ job.company }}</div>
+            <div class="job-location">{{ job.location }}</div>
+            <div class="job-description">{{ job.description }}</div>
+            <a href="{{ job.apply_link }}" class="apply-btn" target="_blank">Apply Now</a>
+        </div>
+        {% else %}
+        <p>No job postings available right now.</p>
+        {% endfor %}
+    </div>
 </body>
 </html>
