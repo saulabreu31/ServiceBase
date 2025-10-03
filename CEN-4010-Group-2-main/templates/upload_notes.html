@@ -1,110 +1,163 @@
 <!DOCTYPE html>
-<html>
-    <header>
-        <div class="logo-container">
-            <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
-        </div>
-        <div class="title-container">
-            <h1 class="title">StudyFlow</h1>
-        </div>
-    </header>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Upload Notes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        body {
+            background-color: #000;
+            color: #e7e9ea;
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #2f3336;
+            background-color: #000;
+        }
+
+        .logo-container img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e7e9ea;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        form textarea,
+        form input[type="text"],
+        form input[type="file"] {
+            width: 100%;
+            background-color: #16181c;
+            color: #e7e9ea;
+            border: 1px solid #2f3336;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        form button {
+            background-color: #1d9bf0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            margin-top: 12px;
+            cursor: pointer;
+            float: right;
+        }
+
+        h2 {
+            margin-top: 50px;
+            border-bottom: 1px solid #2f3336;
+            padding-bottom: 10px;
+        }
+
+        .note {
+            background: #16181c;
+            border: 1px solid #2f3336;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .note img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
         .delete-btn {
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            margin-top: 12px;
+            font-size: 13px;
             cursor: pointer;
-            margin-top: 10px;
-            font-size: 14px;
         }
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-        .home-btn {
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        .home-btn:hover {
-            background-color: #0056b3;
-        }
+
         .flash-message {
             padding: 10px;
-            margin: 10px 0;
             border-radius: 4px;
+            margin-top: 10px;
         }
-        .flash-success {
-            background-color: #dff0d8;
-            color: #3c763d;
-            border: 1px solid #d6e9c6;
-        }
-        .flash-error {
-            background-color: #f2dede;
-            color: #a94442;
-            border: 1px solid #ebccd1;
-        }
-        .note {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-        }
+
+        .flash-success { background: #14532d; color: #bbf7d0; }
+        .flash-error { background: #7f1d1d; color: #fecaca; }
     </style>
 </head>
 <body>
-<a href="{{ url_for('home') }}" class="home-btn">Back to Home</a>
-
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div class="flash-message flash-{{ category }}">{{ message }}</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
-<h1>Upload Notes</h1>
-<form method="POST" action="{{ url_for('main.uploadNotes') }}">
-    <label for="course_name">Course Name:</label><br>
-    <input type="text" id="course_name" name="course_name" required><br><br>
-
-    <label for="note_title">Note Title:</label><br>
-    <input type="text" id="note_title" name="note_title" required><br><br>
-
-    <label for="content">Content:</label><br>
-    <textarea id="content" name="content" rows="10" cols="80" required></textarea><br><br>
-
-    <button type="submit">Submit</button>
-</form>
-<!-- Display saved notes below the form -->
-<h2>Saved Notes</h2>
-<div>
-    {% if notes %}
-    {% for note in notes %}
-    <div class="note" id="note-{{ note.id }}">
-        <h3>{{ note.title }}</h3>
-        <p><strong>Course Name:</strong> {{ note.course_name }}</p>
-        <p><strong>Timestamp:</strong> {{ note.timestamp }}</p>
-        <p>{{ note.content }}</p>
-        <form method="POST" action="{{ url_for('main.deleteNote', note_id=note.id) }}" style="display: inline; margin: 0; padding: 0;">
-            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this note?')">Delete Note</button>
-        </form>
+    <div class="header">
+        <div class="logo-container">
+            <img id="logo" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="StudyFlow Logo">
+        </div>
+        <div class="title-container">
+            <h1 class="title">StudyFlow Notes</h1>
+        </div>
     </div>
-    <hr>
-    {% endfor %}
-    {% else %}
-    <p>No notes saved yet.</p>
-    {% endif %}
-</div>
+
+    <div class="container">
+        <a href="{{ url_for('home') }}" style="color: #1d9bf0; text-decoration: none;">← Back to Home</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('main.uploadNotes') }}" enctype="multipart/form-data">
+            <label for="course_name">Course Name:</label>
+            <input type="text" id="course_name" name="course_name" required>
+
+            <label for="note_title">Note Title:</label>
+            <input type="text" id="note_title" name="note_title" required>
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+
+            <label for="image">Optional Image:</label>
+            <input type="file" name="image" accept="image/*">
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <h2>Saved Notes</h2>
+        {% if notes %}
+            {% for note in notes %}
+                <div class="note">
+                    <h3>{{ note.title }}</h3>
+                    <p><strong>{{ note.course_name }}</strong></p>
+                    <p style="color: #71767b;">{{ note.timestamp }}</p>
+                    <p>{{ note.content }}</p>
+                    {% if note.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ note.image_filename) }}" alt="Note Image">
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('main.deleteNote', note_id=note.id) }}">
+                        <button type="submit" class="delete-btn" onclick="return confirm('Delete this note?')">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No notes available yet.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
